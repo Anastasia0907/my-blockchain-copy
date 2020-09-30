@@ -1,3 +1,5 @@
 
-]
-java:S4684"@Replace this persistent entity with a simple POJO or DTO object.(ŽŒ«ä8§‰ë‘Ì.
+[
+java:S1128"@Remove this unused import 'by.it.academy.service.WalletService'.(Ñ¯ä§8ñÄ·‘Í.
+[
+java:S4684"@Replace this persistent entity with a simple POJO or DTO object.(àÍ³õ8§‰ë‘Ì.

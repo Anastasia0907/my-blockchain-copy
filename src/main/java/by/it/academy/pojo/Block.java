@@ -44,17 +44,4 @@ public class Block {
                 );
     }
 
-    public void mineBlock(int difficulty) {
-        String target = new String(new char[difficulty]).replace('\0', '0');
-        while (!hash.substring(0, difficulty).equals(target)) {
-            nonce++;
-            hash = calculateHash();
-        }
-        System.out.println("Block Mined! Hash : " + hash);
-
-//      In reality each miner will start iterating from a random point.
-//      Some miners may even try random numbers for nonce.
-//      Also it’s worth noting that at the harder difficulties solutions
-//      may require more than integer.MAX_VALUE, miners can then try changing the timestamp.
-    }
 }

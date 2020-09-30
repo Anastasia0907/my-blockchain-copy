@@ -25,18 +25,14 @@ public class UserService {
     @Autowired
     WalletService walletService;
 
-    @Autowired
-    TransactionService transactionService;
-
     @Transactional
-    public void createNewUser(User user) {
+    public void createNewUser(User user, String currency) {
         final String encodedPassword = passwordEncoder.encode(user.getPassword());
         logger.info("Save a new user with name and password : {} {}",
                 user.getUserName(), encodedPassword);
         user.setPassword(encodedPassword);
 
-        walletService.createWallet(user);
-        transactionService.createFirstTransaction(user);
+        walletService.createWallet(user, currency);
 
         userRepository.create(user);
     }
@@ -59,9 +55,9 @@ public class UserService {
     @Transactional
     public void update(User user) {
         logger.info("Calling userService.update()");
-        logger.info("Updated user info : " + user.toString());
+        logger.info("Updated user info : {}", user);
         User savedUser = userRepository.read(user.getId());
-        logger.info("Saved user info : " + savedUser.toString());
+        logger.info("Saved user info : {}", savedUser);
         if (user.getUserName() != null){
             logger.info("Changing userName");
             savedUser.setUserName(user.getUserName());

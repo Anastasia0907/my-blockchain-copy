@@ -3,7 +3,9 @@
 
 <jsp:include page="header.jsp"/>
 
-    <h1>${user.userName}</h1>
+    <div class="container">
+
+        <h1>${user.userName}</h1>
 
         <form action="/blockchain/${user.id}/new-transaction" method="post" >
           <div class="form-group row">
@@ -24,8 +26,15 @@
                     <input type="number" name="value" class="form-control" id="recipientPublicKey">
                 </div>
           </div>
+          <div class="form-group row">
+                <label for="currency" class="col-sm-2 col-form-label">Currency</label>
+                <div class="col-sm-10">
+                    <input type="text" name="currency" readonly class="form-control-plaintext" id="currency" value="${currency}">
+                </div>
+          </div>
 
           <button type="submit" class="btn btn-primary">Submit</button>
         </form>
+    </div>
 
 <jsp:include page="footer.jsp"/>

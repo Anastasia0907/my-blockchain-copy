@@ -37,10 +37,12 @@ public class Transaction {
 
     private double value;
 
+    private String currency;
+
     private byte[] signature;
 
     @Column
-    private byte isTransactionApproved;
+    private int transactionStatus;
 
     @ManyToOne
     private Block block;

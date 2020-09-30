@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.security.PrivateKey;
-import java.security.PublicKey;
 import java.util.List;
 
 @Service
@@ -24,21 +23,18 @@ public class TransactionService {
     TransactionRepository transactionRepository;
 
     @Autowired
-    UserService userService;
-
-    @Autowired
     WalletService walletService;
 
     @Transactional
-    public List<Transaction> findUserInputsById(String id) {
-        User user = userService.get(id);
-        return transactionRepository.findInputsByRecipientPublicKey(user.getWallet().getPublicKeyString());
+    public List<Transaction> findInputsByWalletId(String walletId) {
+        Wallet wallet = walletService.read(walletId);
+        return transactionRepository.findInputsByRecipientPublicKey(wallet.getPublicKeyString());
     }
 
     @Transactional
-    public List<Transaction> findUserOutputsById(String id) {
-        User user = userService.get(id);
-        return transactionRepository.findOutputsBySenderPublicKey(user.getWallet().getPublicKeyString());
+    public List<Transaction> findOutputsByWalletId(String walletId) {
+        Wallet wallet = walletService.read(walletId);
+        return transactionRepository.findOutputsBySenderPublicKey(wallet.getPublicKeyString());
     }
 
     @Transactional
@@ -47,19 +43,20 @@ public class TransactionService {
     }
 
     @Transactional
-    public void createFirstTransaction(User user) {
-        logger.info("Creating first transaction for user :{}",user.getUserName());
-        logger.info(user.toString());
+    public void createFirstTransaction(User user, Wallet wallet) {
+        logger.info("Creating first transaction for user :{}", user.getUserName());
+        logger.info("{}", user);
         Transaction transaction = Transaction.builder()
-                .recipientPublicKey(user.getWallet().getPublicKey())
-                .recipientPublicKeyString(StringUtil.getStringFromKey(user.getWallet().getPublicKey()))
+                .recipientPublicKey(wallet.getPublicKey())
+                .recipientPublicKeyString(StringUtil.getStringFromKey(wallet.getPublicKey()))
                 .value(100)
+                .currency(wallet.getCurrency())
                 .build();
 
         logger.info("\nTransaction info : \nvalue={}, \npublicKey={}",
                 transaction.getValue(),
                 transaction.getRecipientPublicKeyString());
-        generateSignature(transaction, user.getWallet().getPrivateKey());
+        generateSignature(transaction, wallet.getPrivateKey());
         transactionRepository.create(transaction);
     }
 
@@ -74,17 +71,24 @@ public class TransactionService {
         Wallet senderWallet = walletService.getByPublicKeyString(senderPublicKeyString);
         Wallet recipientWallet = walletService.getByPublicKeyString(recipientPublicKeyString);
 
+        if (value <= 0){
+            throw new Exception("Transaction failed : transaction cannot be null or negative");
+        }
         if (senderWallet.getBalance() < value) {
             throw new Exception("Transaction failed : not enough money on your wallet");
         }
+        if (!senderWallet.getCurrency().equals(recipientWallet.getCurrency())) {
+            throw new Exception("Transaction failed : you cannot transfer money to different currency wallet");
+        }
 
         Transaction transaction = Transaction.builder()
-                    .recipientPublicKey(recipientWallet.getPublicKey())
-                    .recipientPublicKeyString(recipientWallet.getPublicKeyString())
-                    .senderPublicKey(senderWallet.getPublicKey())
-                    .senderPublicKeyString(senderWallet.getPublicKeyString())
-                    .value(value)
-                    .build();
+                .recipientPublicKey(recipientWallet.getPublicKey())
+                .recipientPublicKeyString(recipientWallet.getPublicKeyString())
+                .senderPublicKey(senderWallet.getPublicKey())
+                .senderPublicKeyString(senderWallet.getPublicKeyString())
+                .value(value)
+                .currency(senderWallet.getCurrency())
+                .build();
         generateSignature(transaction, senderWallet.getPrivateKey());
 
         walletService.addBalance(recipientWallet, value);
@@ -106,10 +110,4 @@ public class TransactionService {
         return transactionRepository.findAll();
     }
 
-//    public boolean verifySignature(){
-//        String data = senderPublicKeyString
-//                + recipientPublicKeyString
-//                + value;
-//        return StringUtil.verifyECDSASig(senderPublicKey, data, signature);
-//    }
 }

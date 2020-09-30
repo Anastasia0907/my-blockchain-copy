@@ -1,5 +1,6 @@
 package by.it.academy.repository;
 
+import by.it.academy.pojo.User;
 import by.it.academy.pojo.Wallet;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,5 +70,13 @@ public class WalletRepository implements GenericDao<Wallet>{
                 .stream()
                 .findFirst()
                 .orElse(null);
+    }
+
+    public List<Wallet> findAllByUser(User user) {
+        return sessionFactory
+                .getCurrentSession()
+                .createQuery("from Wallet w where w.walletOwner=:user", Wallet.class)
+                .setParameter("user", user)
+                .list();
     }
 }

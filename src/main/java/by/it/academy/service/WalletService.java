@@ -9,8 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.security.PrivateKey;
-import java.security.PublicKey;
+import java.util.List;
 
 @Service
 public class WalletService {
@@ -20,30 +19,22 @@ public class WalletService {
     @Autowired
     WalletRepository walletRepository;
 
+    @Autowired
+    TransactionService transactionService;
+
     @Transactional
     public Wallet read(String id){
         return walletRepository.read(id);
     }
 
     @Transactional
-    public void createWallet(User user) {
+    public void createWallet(User user, String currency) {
         logger.info("Creating a wallet for user : {}", user.getUserName());
-        Wallet wallet = new Wallet(user);
+        Wallet wallet = new Wallet(user, currency);
+        logger.info("New wallet : {}", wallet);
         walletRepository.create(wallet);
-        user.setWallet(wallet);
-        logger.info("Wallet created : {} ", wallet.toString());
-    }
-
-    @Transactional
-    public PublicKey getPublicKeyByString(String publicKeyString) {
-        Wallet wallet = walletRepository.findByPublicKeyString(publicKeyString);
-        return wallet.getPublicKey();
-    }
-
-    @Transactional
-    public PrivateKey getPrivateKeyByPublicString(String publicKeyString) {
-        Wallet wallet = walletRepository.findByPublicKeyString(publicKeyString);
-        return wallet.getPrivateKey();
+        logger.info("Wallet created : {} ", wallet);
+        transactionService.createFirstTransaction(user, wallet);
     }
 
     @Transactional
@@ -61,5 +52,10 @@ public class WalletService {
     public void subtractBalance(Wallet wallet, double value) {
         wallet.setBalance(wallet.getBalance() - value);
         walletRepository.update(wallet);
+    }
+
+    @Transactional
+    public List<Wallet> getAllByUser(User user) {
+        return walletRepository.findAllByUser(user);
     }
 }

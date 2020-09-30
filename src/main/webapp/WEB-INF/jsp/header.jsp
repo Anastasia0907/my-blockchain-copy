@@ -31,6 +31,9 @@
                 <a class="nav-link" href="/blockchain/${user.id}/userpage">User Page</a>
               </li>
               <li class="nav-item">
+                <a class="nav-link" href="/blockchain/${user.id}/start-mining">Start Mining</a>
+              </li>
+              <li class="nav-item">
                 <a class="nav-link" href="/blockchain/logout">Logout</a>
               </li>
           </sec:authorize>

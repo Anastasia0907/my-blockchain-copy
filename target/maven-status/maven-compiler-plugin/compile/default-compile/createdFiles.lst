@@ -1,4 +1,5 @@
 by\it\academy\pojo\UserRole.class
+by\it\academy\controller\StartMiningController.class
 by\it\academy\security\SecurityConfiguration.class
 by\it\academy\controller\TransactionListController.class
 by\it\academy\pojo\User.class
@@ -7,6 +8,7 @@ by\it\academy\controller\UserPageController.class
 by\it\academy\repository\WalletRepository.class
 by\it\academy\repository\TransactionRepository.class
 by\it\academy\security\SecurityInitializer.class
+by\it\academy\controller\NewWalletController.class
 by\it\academy\controller\RegisterController.class
 by\it\academy\controller\HomeController.class
 by\it\academy\controller\UserTransactionListController.class
@@ -22,6 +24,7 @@ by\it\academy\security\AuthenticationService.class
 by\it\academy\pojo\Transaction$TransactionBuilder.class
 by\it\academy\pojo\Block.class
 by\it\academy\controller\UpdateUserController.class
+by\it\academy\pojo\Wallet$WalletBuilder.class
 by\it\academy\pojo\Transaction.class
 by\it\academy\pojo\Wallet.class
 by\it\academy\service\WalletService.class

@@ -21,6 +21,14 @@
            <label for="mobileNumber">Mobile phone</label>
            <input type="text" class="form-control" name="mobileNumber" id="mobileNumber" placeholder="Mobile phone">
         </p>
+        <div class="form-group">
+            <label for="selectCurrency">Select currency for your first wallet</label>
+            <select class="form-control" id="selectCurrency" name="currency">
+              <option>USD</option>
+              <option>EUR</option>
+              <option>BYN</option>
+            </select>
+        </div>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
       </form>
      </div>

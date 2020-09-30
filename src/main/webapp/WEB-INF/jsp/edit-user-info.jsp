@@ -1,5 +1,7 @@
 <jsp:include page="header.jsp"/>
 
+    <div class="container">
+
     <h1>${user.userName}</h1>
 
         <form action="/blockchain/${user.id}/edit-user-info" method="post" >
@@ -19,5 +21,7 @@
 
           <button type="submit" class="btn btn-primary">Submit</button>
         </form>
+
+    </div>
 
 <jsp:include page="footer.jsp"/>

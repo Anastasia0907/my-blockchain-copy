@@ -1,18 +1,20 @@
 package by.it.academy.pojo;
 
 import by.it.academy.utils.StringUtil;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.security.*;
 import java.security.spec.ECGenParameterSpec;
-import java.util.List;
 
-@Data
+@Getter
+@Setter
+@Builder
 @Entity
+@AllArgsConstructor
 @NoArgsConstructor
 public class Wallet {
 
@@ -22,26 +24,30 @@ public class Wallet {
     private String walletId;
 
     @Column(columnDefinition="MEDIUMBLOB")
+    @JsonIgnore
     private PrivateKey privateKey;
 
     @Column(columnDefinition="MEDIUMBLOB")
+    @JsonIgnore
     private PublicKey publicKey;
 
     private String privateKeyString;
 
     private String publicKeyString;
 
-    @OneToOne
+    @ManyToOne
+    @JsonIgnore
     private User walletOwner;
+
+    private String currency;
 
     private double balance;
 
-    public Wallet(User user){
+    public Wallet(User user, String currency){
         generateKeyPair();
         this.walletOwner = user;
+        this.currency = currency;
         this.balance = 100;
-        this.privateKeyString = StringUtil.getStringFromKey(privateKey);
-        this.publicKeyString = StringUtil.getStringFromKey(publicKey);
     }
 
     private void generateKeyPair() {
@@ -54,8 +60,10 @@ public class Wallet {
             keyGen.initialize(ecSpec, random);   //256 bytes provides an acceptable security level
             KeyPair keyPair = keyGen.generateKeyPair();
             // Set the public and private keys from the keyPair
-            privateKey = keyPair.getPrivate();
-            publicKey = keyPair.getPublic();
+            this.setPrivateKey(keyPair.getPrivate());
+            this.setPublicKey(keyPair.getPublic());
+            this.setPrivateKeyString(StringUtil.getStringFromKey(getPrivateKey()));
+            this.setPublicKeyString(StringUtil.getStringFromKey(getPublicKey()));
         }catch(Exception e) {
             throw new RuntimeException(e);
         }
@@ -68,6 +76,7 @@ public class Wallet {
                 ", privateKey=" + privateKeyString +
                 ", publicKey=" + publicKeyString +
                 ", balance=" + balance +
+                ", currency=" + currency +
                 '}';
     }
 }

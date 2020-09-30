@@ -1,8 +1,10 @@
 package by.it.academy.controller;
 
 import by.it.academy.pojo.User;
+import by.it.academy.pojo.Wallet;
 import by.it.academy.service.TransactionService;
 import by.it.academy.service.UserService;
+import by.it.academy.service.WalletService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,16 +27,22 @@ public class NewTransactionController {
     @Autowired
     UserService userService;
 
-    @GetMapping(value = "/{id}/new-transaction")
+    @Autowired
+    WalletService walletService;
+
+    @GetMapping(value = "/{id}/{walletId}/new-transaction")
     public ModelAndView showNewTransactionForm(
             @PathVariable String id,
+            @PathVariable String walletId,
             ModelAndView modelAndView
     ) {
         logger.info("Calling showNewTransactionForm - GET");
 
         User user = userService.get(id);
+        Wallet wallet = walletService.read(walletId);
         modelAndView.addObject("user", user);
-        modelAndView.addObject("publicKey", user.getWallet().getPublicKeyString());
+        modelAndView.addObject("publicKey", wallet.getPublicKeyString());
+        modelAndView.addObject("currency", wallet.getCurrency());
         modelAndView.setViewName("new-transaction");
 
         return modelAndView;
