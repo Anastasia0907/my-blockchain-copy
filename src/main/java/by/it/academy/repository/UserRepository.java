@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.List;
 
 @Repository
-public class UserRepository implements GenericDao<User>{
+public class UserRepository implements GenericDao<User> {
 
     @Autowired
     SessionFactory sessionFactory;

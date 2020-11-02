@@ -19,7 +19,7 @@ public class AuthenticationService implements UserDetailsService {
     private static final Logger logger = LoggerFactory.getLogger(AuthenticationService.class);
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Override
     public UserDetails loadUserByUsername(String username) {

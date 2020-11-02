@@ -24,7 +24,7 @@ public class StartMiningController {
     private static final Logger logger = LoggerFactory.getLogger(StartMiningController.class);
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @GetMapping(value = "/{id}/start-mining")
     public ModelAndView showStartMiningForm(

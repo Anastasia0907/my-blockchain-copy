@@ -7,8 +7,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -17,13 +17,13 @@ public class UserService {
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
-    WalletService walletService;
+    private WalletService walletService;
 
     @Transactional
     public void createNewUser(User user, String currency) {
@@ -37,17 +37,17 @@ public class UserService {
         userRepository.create(user);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public User findByUserName(String userName) {
         return userRepository.find(userName);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<User> getAllUsers() {
         return (List<User>) userRepository.findAll();
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public User get(String id) {
         return userRepository.read(id);
     }
@@ -58,19 +58,19 @@ public class UserService {
         logger.info("Updated user info : {}", user);
         User savedUser = userRepository.read(user.getId());
         logger.info("Saved user info : {}", savedUser);
-        if (user.getUserName() != null){
+        if (user.getUserName() != null) {
             logger.info("Changing userName");
             savedUser.setUserName(user.getUserName());
         }
-        if (user.getPassword() != null){
+        if (user.getPassword() != null) {
             logger.info("Changing user password");
             savedUser.setPassword(user.getPassword());
         }
-        if (user.getEmail() != null){
+        if (user.getEmail() != null) {
             logger.info("Changing user email");
             savedUser.setEmail(user.getEmail());
         }
-        if (user.getMobileNumber() != null){
+        if (user.getMobileNumber() != null) {
             logger.info("Changing user mobileNumber");
             savedUser.setMobileNumber(user.getMobileNumber());
         }

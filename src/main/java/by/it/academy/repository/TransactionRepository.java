@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.io.Serializable;
-import java.security.PublicKey;
 import java.util.List;
 
 @Repository
@@ -49,7 +48,7 @@ public class TransactionRepository implements GenericDao<Transaction> {
                 .list();
     }
 
-    public List<Transaction> findInputsByRecipientPublicKey(String publicKey){
+    public List<Transaction> findInputsByRecipientPublicKey(String publicKey) {
         return sessionFactory
                 .getCurrentSession()
                 .createQuery("from Transaction t where t.recipientPublicKeyString=:publicKey", Transaction.class)
@@ -57,7 +56,7 @@ public class TransactionRepository implements GenericDao<Transaction> {
                 .list();
     }
 
-    public List<Transaction> findOutputsBySenderPublicKey(String publicKey){
+    public List<Transaction> findOutputsBySenderPublicKey(String publicKey) {
         return sessionFactory
                 .getCurrentSession()
                 .createQuery("from Transaction t where t.senderPublicKeyString=:publicKey", Transaction.class)

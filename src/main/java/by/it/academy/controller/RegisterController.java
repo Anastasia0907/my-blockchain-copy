@@ -2,7 +2,6 @@ package by.it.academy.controller;
 
 import by.it.academy.pojo.User;
 import by.it.academy.service.UserService;
-import by.it.academy.service.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,10 +15,10 @@ import org.springframework.web.servlet.ModelAndView;
 public class RegisterController {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @GetMapping
-    public ModelAndView showRegisterPage(){
+    public ModelAndView showRegisterPage() {
         return new ModelAndView("register");
     }
 
@@ -27,7 +26,7 @@ public class RegisterController {
     public String registerNewUser(
             User user,
             @RequestParam String currency
-    ){
+    ) {
         userService.createNewUser(user, currency);
         return "redirect:home";
     }

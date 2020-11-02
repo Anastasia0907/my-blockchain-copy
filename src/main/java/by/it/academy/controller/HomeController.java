@@ -12,12 +12,12 @@ import org.springframework.web.servlet.ModelAndView;
 public class HomeController {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     private static final Logger log = LoggerFactory.getLogger(HomeController.class);
 
     @GetMapping(value = "/home")
-    public ModelAndView homePage(ModelAndView modelAndView){
+    public ModelAndView homePage(ModelAndView modelAndView) {
         log.info("Call homePage");
 
         modelAndView.addObject("greeting", "I love blockchain!");

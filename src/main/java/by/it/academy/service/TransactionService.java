@@ -9,8 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.security.PrivateKey;
 import java.util.List;
 
@@ -20,18 +20,18 @@ public class TransactionService {
     private static final Logger logger = LoggerFactory.getLogger(TransactionService.class);
 
     @Autowired
-    TransactionRepository transactionRepository;
+    private TransactionRepository transactionRepository;
 
     @Autowired
-    WalletService walletService;
+    private WalletService walletService;
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<Transaction> findInputsByWalletId(String walletId) {
         Wallet wallet = walletService.read(walletId);
         return transactionRepository.findInputsByRecipientPublicKey(wallet.getPublicKeyString());
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<Transaction> findOutputsByWalletId(String walletId) {
         Wallet wallet = walletService.read(walletId);
         return transactionRepository.findOutputsBySenderPublicKey(wallet.getPublicKeyString());
@@ -71,7 +71,7 @@ public class TransactionService {
         Wallet senderWallet = walletService.getByPublicKeyString(senderPublicKeyString);
         Wallet recipientWallet = walletService.getByPublicKeyString(recipientPublicKeyString);
 
-        if (value <= 0){
+        if (value <= 0) {
             throw new Exception("Transaction failed : transaction cannot be null or negative");
         }
         if (senderWallet.getBalance() < value) {
@@ -105,7 +105,7 @@ public class TransactionService {
         transaction.setSignature(StringUtil.applyECDSASig(privateKey, data));
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<Transaction> readAll() {
         return transactionRepository.findAll();
     }

@@ -7,8 +7,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -17,13 +17,13 @@ public class WalletService {
     private static final Logger logger = LoggerFactory.getLogger(WalletService.class);
 
     @Autowired
-    WalletRepository walletRepository;
+    private WalletRepository walletRepository;
 
     @Autowired
-    TransactionService transactionService;
+    private TransactionService transactionService;
 
-    @Transactional
-    public Wallet read(String id){
+    @Transactional(readOnly = true)
+    public Wallet read(String id) {
         return walletRepository.read(id);
     }
 
@@ -37,7 +37,7 @@ public class WalletService {
         transactionService.createFirstTransaction(user, wallet);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public Wallet getByPublicKeyString(String publicKeyString) {
         return walletRepository.findByPublicKeyString(publicKeyString);
     }
@@ -54,7 +54,7 @@ public class WalletService {
         walletRepository.update(wallet);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<Wallet> getAllByUser(User user) {
         return walletRepository.findAllByUser(user);
     }

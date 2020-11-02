@@ -22,13 +22,13 @@ public class NewTransactionController {
     private static final Logger logger = LoggerFactory.getLogger(NewTransactionController.class);
 
     @Autowired
-    TransactionService transactionService;
+    private TransactionService transactionService;
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Autowired
-    WalletService walletService;
+    private WalletService walletService;
 
     @GetMapping(value = "/{id}/{walletId}/new-transaction")
     public ModelAndView showNewTransactionForm(

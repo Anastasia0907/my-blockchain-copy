@@ -22,10 +22,10 @@ public class UserPageController {
     private static final Logger logger = LoggerFactory.getLogger(UserPageController.class);
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Autowired
-    WalletService walletService;
+    private WalletService walletService;
 
     @GetMapping(value = "/{id}/userpage")
     public ModelAndView userpage(

@@ -11,7 +11,7 @@ import java.security.PublicKey;
 import java.util.List;
 
 @Repository
-public class WalletRepository implements GenericDao<Wallet>{
+public class WalletRepository implements GenericDao<Wallet> {
 
     @Autowired
     SessionFactory sessionFactory;

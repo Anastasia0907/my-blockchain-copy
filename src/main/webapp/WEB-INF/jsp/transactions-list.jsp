@@ -26,7 +26,7 @@
               <td style="text-align:center">${input.currency}</td>
               <td style="text-align:center">
                 <c:if test="${input.transactionStatus == 0}">
-                    Not confirmed
+                    <p style="color:#FF0000">Not confirmed</p>
                 </c:if>
                 <c:if test="${input.transactionStatus == 1}">
                     Confirmed
@@ -61,7 +61,7 @@
               <td style="text-align:center">${output.currency}</td>
               <td style="text-align:center">
                 <c:if test="${output.transactionStatus == 0}">
-                    Not confirmed
+                    <p style="color:#FF0000">Not confirmed</p>
                 </c:if>
                 <c:if test="${output.transactionStatus == 1}">
                     Confirmed

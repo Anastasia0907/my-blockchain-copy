@@ -25,10 +25,10 @@ public class Transaction {
     @GenericGenerator(name = "system-uuid", strategy = "uuid")
     private String transactionId;
 
-    @Column(columnDefinition="MEDIUMBLOB")
+    @Column(columnDefinition = "MEDIUMBLOB")
     private PublicKey senderPublicKey;
 
-    @Column(columnDefinition="MEDIUMBLOB")
+    @Column(columnDefinition = "MEDIUMBLOB")
     private PublicKey recipientPublicKey;
 
     private String senderPublicKeyString;

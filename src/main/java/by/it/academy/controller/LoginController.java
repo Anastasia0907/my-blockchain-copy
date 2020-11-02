@@ -15,7 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class LoginController {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 

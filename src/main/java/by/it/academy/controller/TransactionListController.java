@@ -9,16 +9,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Collections;
 import java.util.List;
 
 @Controller
 public class TransactionListController {
 
     @Autowired
-    TransactionService transactionService;
+    private TransactionService transactionService;
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @GetMapping(value = "/{id}/all-transactions-list")
     public ModelAndView allTransactionsList(
@@ -26,6 +27,7 @@ public class TransactionListController {
             ModelAndView modelAndView
     ) {
         List<Transaction> transactions = transactionService.readAll();
+        Collections.reverse(transactions);
         modelAndView.addObject("transactions", transactions);
         modelAndView.addObject("user", userService.get(id));
         modelAndView.setViewName("all-transactions-list");

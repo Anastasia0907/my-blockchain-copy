@@ -23,11 +23,11 @@ public class Wallet {
     @GenericGenerator(name = "system-uuid", strategy = "uuid")
     private String walletId;
 
-    @Column(columnDefinition="MEDIUMBLOB")
+    @Column(columnDefinition = "MEDIUMBLOB")
     @JsonIgnore
     private PrivateKey privateKey;
 
-    @Column(columnDefinition="MEDIUMBLOB")
+    @Column(columnDefinition = "MEDIUMBLOB")
     @JsonIgnore
     private PublicKey publicKey;
 
@@ -43,7 +43,7 @@ public class Wallet {
 
     private double balance;
 
-    public Wallet(User user, String currency){
+    public Wallet(User user, String currency) {
         generateKeyPair();
         this.walletOwner = user;
         this.currency = currency;
@@ -53,7 +53,7 @@ public class Wallet {
     private void generateKeyPair() {
         try {
             Security.addProvider(new BouncyCastleProvider());
-            KeyPairGenerator keyGen = KeyPairGenerator.getInstance("ECDSA","BC");
+            KeyPairGenerator keyGen = KeyPairGenerator.getInstance("ECDSA", "BC");
             SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
             ECGenParameterSpec ecSpec = new ECGenParameterSpec("prime192v1");
             // Initialize the key generator and generate a KeyPair
@@ -64,7 +64,7 @@ public class Wallet {
             this.setPublicKey(keyPair.getPublic());
             this.setPrivateKeyString(StringUtil.getStringFromKey(getPrivateKey()));
             this.setPublicKeyString(StringUtil.getStringFromKey(getPublicKey()));
-        }catch(Exception e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
