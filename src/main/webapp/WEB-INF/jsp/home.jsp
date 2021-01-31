@@ -8,7 +8,7 @@
     <br>
     <h2 style="color:#4d4d4d;text-align:center">
         The world's most popular way to buy, store and use cryptocurrency
-        Hello new git repository
+        This is a new clone repository
     </h2>
     <br>
 
